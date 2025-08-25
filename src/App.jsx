@@ -6,6 +6,7 @@ import AuthContext from './services/AuthContext'
 import Home from './components/Home'
 import Login from './components/Login'
 import Signup from './components/Signup'
+import TopBar from './components/TopBar'
 
 import './App.css'
 
@@ -26,7 +27,7 @@ function App() {
   return (
    <BrowserRouter>
       <AuthProvider>
-        <div className="min-h-screen bg-gray-50">
+        <div>
           <TopBar />
           <AppRoutes />
         </div>
