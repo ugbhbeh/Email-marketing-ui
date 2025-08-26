@@ -51,13 +51,25 @@ export default function CampaignsPage() {
       {loading && <p>Loading...</p>}
       {error && <p>{error}</p>}
 
-      <ul>
+      <div>
         {campaigns.map((c) => (
-          <li key={c.id}>
-            {c.name} (Created: {new Date(c.createdAt).toLocaleDateString()})
-          </li>
+          <Link
+            key={c.id}
+            to={`/campaign/${c.id}`}
+            style={{
+              display: "block",
+              border: "1px solid black",
+              padding: "10px",
+              marginBottom: "10px",
+              textDecoration: "none",
+              color: "inherit",
+            }}
+          >
+            <h3>{c.name}</h3>
+            <p>Created: {new Date(c.createdAt).toLocaleDateString()}</p>
+          </Link>
         ))}
-      </ul>
+      </div>
     </div>
   );
 }
