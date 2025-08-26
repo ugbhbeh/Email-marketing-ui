@@ -1,8 +1,7 @@
-// show all the deatils for a single campagin for the get campaign by id route
-// show some three dots somewhere and give a delete option 
+
 // have an add customers option that shows all customers already tied to a user 
 // have btn to mass import a csv for clients 
-// show all he cusotmers in a card format, with dots to delete them from the campagin 
+
 
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
@@ -15,6 +14,18 @@ export default function CampaignDetailsPage() {
   const [campaign, setCampaign] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [allCustomers, setAllCustomers] = useState([]);
+  const [selectedCustomerIds, setSelectedCustomerIds] = useState([]);
+
+const fetchAllCustomers = async () => {
+  try {
+    const res = await api.get("/customers"); // assumes you have this route
+    setAllCustomers(res.data);
+  } catch (err) {
+    setError(err.response?.data?.error || "Failed to fetch customers");
+  }
+};
+
 
   const fetchCampaign = async () => {
     try {
@@ -27,6 +38,12 @@ export default function CampaignDetailsPage() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+  fetchCampaign();
+  fetchAllCustomers();
+}, [id]);
+
 
   const deleteCampaign = async () => {
     try {
@@ -45,6 +62,29 @@ export default function CampaignDetailsPage() {
       setError(err.response?.data?.error || "Failed to remove customer");
     }
   };
+// Add existing customers to campaign
+const addCustomersToCampaign = async () => {
+  if (selectedCustomerIds.length === 0) return;
+  try {
+    await api.post(`/campaigns/${id}/customers`, {
+      customerIds: selectedCustomerIds,
+    });
+    setSelectedCustomerIds([]);
+    fetchCampaign();
+  } catch (err) {
+    setError(err.response?.data?.error || "Failed to add customers");
+  }
+};
+
+// CSV import (expects already-parsed clients array)
+const importCsv = async (clients) => {
+  try {
+    await api.post(`/campaigns/${id}/customers/csv`, { clients });
+    fetchCampaign();
+  } catch (err) {
+    setError(err.response?.data?.error || "CSV import failed");
+  }
+};
 
   useEffect(() => {
     fetchCampaign();
@@ -63,6 +103,43 @@ export default function CampaignDetailsPage() {
       <p>Updated: {new Date(campaign.updatedAt).toLocaleDateString()}</p>
 
       <button onClick={deleteCampaign}>Delete Campaign</button>
+        {/* Add customers from dropdown */}
+        <h3>Add Existing Customers</h3>
+        <select
+        multiple
+        value={selectedCustomerIds}
+        onChange={(e) =>
+            setSelectedCustomerIds(
+            Array.from(e.target.selectedOptions, (opt) => opt.value)
+            )
+        }
+        >
+        {allCustomers.map((cust) => (
+            <option key={cust.id} value={cust.id}>
+            {cust.name} ({cust.email})
+            </option>
+        ))}
+        </select>
+        <button onClick={addCustomersToCampaign}>Add Selected</button>
+
+        {/* Mass CSV import */}
+        <h3>Import Customers via CSV</h3>
+        <input
+        type="file"
+        accept=".csv"
+        onChange={async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            const text = await file.text();
+            // simple parsing: assume header row "name,email"
+            const lines = text.split("\n").slice(1);
+            const clients = lines
+            .map((line) => line.split(","))
+            .filter((row) => row.length >= 2 && row[0] && row[1])
+            .map(([name, email]) => ({ name: name.trim(), email: email.trim() }));
+            importCsv(clients);
+        }}
+        />
 
       <h2>Customers</h2>
       {campaign.customers.length === 0 ? (
