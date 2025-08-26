@@ -2,6 +2,8 @@ import {  Link } from "react-router-dom"
 import { useContext } from 'react';
 import AuthContext from "../services/AuthContext";
 
+// add a delte btn for someones accounts a drop down
+// say hello with their username
 
 export default function Home(){
       const { logout, isLoggedIn,  } = useContext(AuthContext);
