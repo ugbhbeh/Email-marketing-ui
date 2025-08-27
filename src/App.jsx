@@ -7,7 +7,7 @@ import Home from './components/Home'
 import Login from './components/Login'
 import Signup from './components/Signup'
 import TopBar from './components/TopBar'
-import CampaignsPage from './components/Campaign'
+import CampaignsPage from './components/Campaigns'
 import CampaignDetailsPage from './components/CampaignsDetails'
 
 import './App.css'
