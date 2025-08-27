@@ -1,8 +1,3 @@
-
-// have an add customers option that shows all customers already tied to a user 
-// have btn to mass import a csv for clients 
-
-
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import api from "../services/api";
@@ -19,7 +14,7 @@ export default function CampaignDetailsPage() {
 
 const fetchAllCustomers = async () => {
   try {
-    const res = await api.get("/customers"); // assumes you have this route
+    const res = await api.get("/customers"); 
     setAllCustomers(res.data);
   } catch (err) {
     setError(err.response?.data?.error || "Failed to fetch customers");
@@ -30,7 +25,7 @@ const fetchAllCustomers = async () => {
   const fetchCampaign = async () => {
     try {
       setLoading(true);
-      const res = await api.get(`/campaign/${id}`);
+      const res = await api.get(`/campaigns/${id}`);
       setCampaign(res.data);
     } catch (err) {
       setError(err.response?.data?.error || "Failed to fetch campaign");
@@ -47,8 +42,8 @@ const fetchAllCustomers = async () => {
 
   const deleteCampaign = async () => {
     try {
-      await api.delete(`/campaign/${id}`);
-      navigate("/campaign");
+      await api.delete(`/campaigns/${id}`);
+      navigate("/campaigns");
     } catch (err) {
       setError(err.response?.data?.error || "Failed to delete campaign");
     }
@@ -56,7 +51,7 @@ const fetchAllCustomers = async () => {
 
   const deleteCustomer = async (customerId) => {
     try {
-      await api.delete(`/campaign/${id}/customers/${customerId}`);
+      await api.delete(`/campaigns/${id}/customers/${customerId}`);
       fetchCampaign(); 
     } catch (err) {
       setError(err.response?.data?.error || "Failed to remove customer");
