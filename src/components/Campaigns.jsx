@@ -10,7 +10,7 @@ export default function CampaignsPage() {
   const fetchCampaigns = async () => {
     try {
       setLoading(true);
-      const res = await api.get("/campaign");
+      const res = await api.get("/campaigns");
       setCampaigns(res.data);
     } catch (err) {
       setError(err.response?.data?.error || "Failed to fetch campaigns");
@@ -22,7 +22,7 @@ export default function CampaignsPage() {
   const createCampaign = async () => {
     if (!newName.trim()) return;
     try {
-      await api.post("/campaign", { name: newName });
+      await api.post("/campaigns", { name: newName });
       setNewName("");
       fetchCampaigns();
     } catch (err) {
@@ -55,7 +55,7 @@ export default function CampaignsPage() {
         {campaigns.map((c) => (
           <Link
             key={c.id}
-            to={`/campaign/${c.id}`}
+            to={`/campaigns/${c.id}`}
             style={{
               display: "block",
               border: "1px solid black",
