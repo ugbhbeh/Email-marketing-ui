@@ -71,15 +71,22 @@ const addCustomersToCampaign = async () => {
   }
 };
 
-// CSV import (expects already-parsed clients array)
-const importCsv = async (clients) => {
+// CSV import (multipart/form-data upload)
+const importCsv = async (file) => {
   try {
-    await api.post(`/campaigns/${id}/customers/csv`, { clients });
+    const formData = new FormData();
+    formData.append("file", file);
+
+    await api.post(`/campaigns/${id}/customers/csv`, formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+
     fetchCampaign();
   } catch (err) {
     setError(err.response?.data?.error || "CSV import failed");
   }
 };
+
 
   useEffect(() => {
     fetchCampaign();
@@ -117,24 +124,15 @@ const importCsv = async (clients) => {
         </select>
         <button onClick={addCustomersToCampaign}>Add Selected</button>
 
-        {/* Mass CSV import */}
-        <h3>Import Customers via CSV</h3>
-        <input
+              <h3>Import Customers via CSV</h3>
+      <input
         type="file"
         accept=".csv"
-        onChange={async (e) => {
-            const file = e.target.files[0];
-            if (!file) return;
-            const text = await file.text();
-            // simple parsing: assume header row "name,email"
-            const lines = text.split("\n").slice(1);
-            const clients = lines
-            .map((line) => line.split(","))
-            .filter((row) => row.length >= 2 && row[0] && row[1])
-            .map(([name, email]) => ({ name: name.trim(), email: email.trim() }));
-            importCsv(clients);
+        onChange={(e) => {
+          const file = e.target.files[0];
+          if (file) importCsv(file);
         }}
-        />
+      />
 
       <h2>Customers</h2>
       {campaign.customers.length === 0 ? (
