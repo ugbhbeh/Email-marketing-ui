@@ -9,6 +9,7 @@ import Signup from './components/Signup'
 import TopBar from './components/TopBar'
 import CampaignsPage from './components/Campaigns'
 import CampaignDetailsPage from './components/CampaignsDetails'
+import CustomersPage from './components/Customer'
 
 import './App.css'
 
@@ -22,6 +23,7 @@ function AppRoutes() {
       <Route path="/signup" element={!isLoggedIn ? <Signup /> : <Navigate to="/" />} />
       <Route path="/campaigns" element={ <CampaignsPage />} />
       <Route path="/campaigns/:id" element={<CampaignDetailsPage />} />
+      <Route path="/customers" element={ <CustomersPage />} />
     </Routes>
   );
 }
