@@ -1,5 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { useContext } from 'react'
+import './App.css'
+
 import AuthProvider from './services/Authprovider'
 import AuthContext from './services/AuthContext'
 
@@ -10,8 +12,7 @@ import TopBar from './components/TopBar'
 import CampaignsPage from './components/Campaigns'
 import CampaignDetailsPage from './components/CampaignsDetails'
 import CustomersPage from './components/Customer'
-
-import './App.css'
+import MailingPage from './components/Mailing'
 
 function AppRoutes() {
   const { isLoggedIn } = useContext(AuthContext);
@@ -24,6 +25,8 @@ function AppRoutes() {
       <Route path="/campaigns" element={ <CampaignsPage />} />
       <Route path="/campaigns/:id" element={<CampaignDetailsPage />} />
       <Route path="/customers" element={ <CustomersPage />} />
+      <Route path="/mailing" element={ <MailingPage />} />
+    
     </Routes>
   );
 }
