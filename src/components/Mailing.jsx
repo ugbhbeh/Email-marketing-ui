@@ -28,7 +28,7 @@ export default function MailingPage() {
     }
 
     try {
-      const res = await api.post("/mailing/send", {
+      const res = await api.post("/mails/send", {
         campaignId: selectedCampaign,
         subject,
         message,
