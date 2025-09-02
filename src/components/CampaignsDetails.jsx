@@ -142,13 +142,7 @@ const importCsv = async (file) => {
           {campaign.customers.map((customer) => (
             <div
               key={customer.id}
-              style={{
-                border: "1px solid gray",
-                padding: "8px",
-                marginBottom: "8px",
-                display: "flex",
-                justifyContent: "space-between",
-              }}
+              
             >
               <div>
                 <p>Name: {customer.name}</p>
