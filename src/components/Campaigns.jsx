@@ -57,14 +57,7 @@ export default function CampaignsPage() {
           <Link
             key={c.id}
             to={`/campaigns/${c.id}`}
-            style={{
-              display: "block",
-              border: "1px solid black",
-              padding: "10px",
-              marginBottom: "10px",
-              textDecoration: "none",
-              color: "inherit",
-            }}
+            
           >
             <h3>{c.name}</h3>
             <p>Created: {new Date(c.createdAt).toLocaleDateString()}</p>

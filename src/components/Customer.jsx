@@ -100,7 +100,7 @@ export default function CustomersPage() {
         <p>No customers found</p>
       ) : (
         customers.map((cust) => (
-          <div key={cust.id} style={{ marginBottom: "10px" }}>
+          <div key={cust.id} >
             {editingCustomer === cust.id ? (
               <div>
                 <input
@@ -121,24 +121,18 @@ export default function CustomersPage() {
                 <button onClick={() => setEditingCustomer(null)}>Cancel</button>
               </div>
             ) : (
-              <div style={{ display: "flex", justifyContent: "space-between" }}>
+              <div>
                 <div>
                   <p>Email: {cust.email}</p>
                   <p>Name: {cust.name}</p>
                 </div>
-                <div style={{ position: "relative" }}>
+                <div>
                   <button onClick={() => setMenuOpen(menuOpen === cust.id ? null : cust.id)}>
                     ⋮
                   </button>
                   {menuOpen === cust.id && (
                     <div
-                      style={{
-                        position: "absolute",
-                        right: 0,
-                        border: "1px solid gray",
-                        background: "white",
-                        padding: "5px",
-                      }}
+                      
                     >
                       <button
                         onClick={() => {
