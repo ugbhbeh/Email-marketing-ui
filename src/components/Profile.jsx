@@ -26,8 +26,9 @@ export default function ProfilePage() {
         <div>
           <p><strong>Email:</strong> {profile.email}</p>
           <p><strong>Name:</strong> {profile.name || "N/A"}</p>
-          <p><strong>Campaigns:</strong> {profile.campaigns?.length || 0}</p>
-          <p><strong>Customers:</strong> {profile.customers?.length || 0}</p>
+          <p><strong>Campaigns:</strong> {profile.campaignsCount }</p>
+          <p><strong>Customers:</strong> { profile.customersCount}</p>
+          <p><strong>Mails sent:</strong> { profile.mailsSent}</p>
         </div>
       ) : (
         <p>Loading profile...</p>
@@ -35,3 +36,7 @@ export default function ProfilePage() {
     </div>
   );
 }
+
+
+     
+    
