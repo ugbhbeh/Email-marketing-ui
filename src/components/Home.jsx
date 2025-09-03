@@ -10,9 +10,10 @@ export default function HomePage() {
     <div className="p-6">
       <Tabs defaultValue="campaigns">
         <TabsList className="grid w-full grid-cols-3 mb-6">
+           <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
           <TabsTrigger value="campaigns">Campaigns</TabsTrigger>
           <TabsTrigger value="customers">Customers</TabsTrigger>
-          <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
+         
         </TabsList>
 
         {/* Campaigns */}
@@ -25,8 +26,8 @@ export default function HomePage() {
           <CustomersPage />
         </TabsContent>
 
-        {/* Profile */}
-        <TabsContent value="profile">
+        {/* Dashboard */}
+        <TabsContent value="dashboard">
           <ProfilePage/>
           <MailingPage/>
         </TabsContent>
