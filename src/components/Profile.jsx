@@ -26,9 +26,23 @@ export default function ProfilePage() {
         <div>
           <p><strong>Email:</strong> {profile.email}</p>
           <p><strong>Name:</strong> {profile.name || "N/A"}</p>
-          <p><strong>Campaigns:</strong> {profile.campaignsCount }</p>
-          <p><strong>Customers:</strong> { profile.customersCount}</p>
-          <p><strong>Mails sent:</strong> { profile.mailsSent}</p>
+          <p><strong>Campaigns:</strong> {profile.stats.campaigns}</p>
+          <p><strong>Customers:</strong> {profile.stats.customers}</p>
+          <p><strong>Mails Sent:</strong> {profile.stats.totalSent}</p>
+          <p><strong>Success:</strong> {profile.stats.successCount}</p>
+          <p><strong>Failed:</strong> {profile.stats.failureCount}</p>
+
+          <h3 className="mt-4 font-semibold">Recent Mails</h3>
+          <ul>
+            {profile.stats.recentMails.map((m) => (
+              <li key={m.id}>
+                <strong>{m.subject}</strong> — {m.status}  
+                (to {m.customer?.email || "unknown"})  
+                in campaign {m.campaign?.name || "N/A"}  
+                at {new Date(m.sentAt).toLocaleString()}
+              </li>
+            ))}
+          </ul>
         </div>
       ) : (
         <p>Loading profile...</p>
