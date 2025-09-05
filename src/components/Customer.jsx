@@ -81,7 +81,7 @@ export default function CustomersPage() {
       ) : (
         customers.map((cust) => (
           <div key={cust.id} 
-        onClick= {() => navigate(`/customer/${cust.id}`)}
+          onClick= {() => navigate(`/customer/${cust.id}`)}
           >
             <p>Email: {cust.email}</p>
              <p>Name: {cust.name}</p>

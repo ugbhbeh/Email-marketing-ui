@@ -26,7 +26,7 @@ function AppRoutes() {
       <Route path="/campaigns" element={ <CampaignsPage />} />
       <Route path="/campaigns/:id" element={<CampaignDetailsPage />} />
       <Route path="/customers" element={ <CustomersPage />} />
-      <Route path="/customers/:id" element={ <CustomersDetailsPage />} />
+      <Route path="/customers/:id" element={ <CustomerDetailsPage />} />
       <Route path="/mailing" element={ <MailingPage />} />
     </Routes>
   );
