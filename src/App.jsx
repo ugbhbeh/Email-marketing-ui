@@ -12,6 +12,7 @@ import TopBar from './components/TopBar'
 import CampaignsPage from './components/Campaigns'
 import CampaignDetailsPage from './components/CampaignsDetails'
 import CustomersPage from './components/Customer'
+import CustomerDetailsPage from './components/CustomerDetails'
 import MailingPage from './components/Mailing'
 
 function AppRoutes() {
@@ -25,8 +26,8 @@ function AppRoutes() {
       <Route path="/campaigns" element={ <CampaignsPage />} />
       <Route path="/campaigns/:id" element={<CampaignDetailsPage />} />
       <Route path="/customers" element={ <CustomersPage />} />
+      <Route path="/customers/:id" element={ <CustomersDetailsPage />} />
       <Route path="/mailing" element={ <MailingPage />} />
-    
     </Routes>
   );
 }

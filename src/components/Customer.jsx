@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import api from "../services/api";
 
 export default function CustomersPage() {
   const [customers, setCustomers] = useState([]);
   const [error, setError] = useState("");
   const [newCustomer, setNewCustomer] = useState({ email: "", name: "" });
-  const [menuOpen, setMenuOpen] = useState(null); // which customer menu is open
-  const [editingCustomer, setEditingCustomer] = useState(null); // customer being edited
-  const [editData, setEditData] = useState({ email: "", name: "" });
+  
+  const navigate = useNavigate()
 
   const fetchCustomers = async () => {
     try {
@@ -29,26 +29,6 @@ export default function CustomersPage() {
       fetchCustomers();
     } catch (err) {
       setError(err.response?.data?.error || "Failed to add customer");
-    }
-  };
-
-  const deleteCustomer = async (id) => {
-    try {
-      await api.delete(`/customers/${id}`);
-      fetchCustomers();
-    } catch (err) {
-      setError(err.response?.data?.error || "Failed to delete customer");
-    }
-  };
-
-  const updateCustomer = async (id) => {
-    try {
-      await api.put(`/customers/${id}`, editData);
-      setEditingCustomer(null);
-      setEditData({ email: "", name: "" });
-      fetchCustomers();
-    } catch (err) {
-      setError(err.response?.data?.error || "Failed to update customer");
     }
   };
 
@@ -100,65 +80,14 @@ export default function CustomersPage() {
         <p>No customers found</p>
       ) : (
         customers.map((cust) => (
-          <div key={cust.id} >
-            {editingCustomer === cust.id ? (
-              <div>
-                <input
-                  type="email"
-                  value={editData.email}
-                  onChange={(e) =>
-                    setEditData({ ...editData, email: e.target.value })
-                  }
-                />
-                <input
-                  type="text"
-                  value={editData.name}
-                  onChange={(e) =>
-                    setEditData({ ...editData, name: e.target.value })
-                  }
-                />
-                <button onClick={() => updateCustomer(cust.id)}>Save</button>
-                <button onClick={() => setEditingCustomer(null)}>Cancel</button>
-              </div>
-            ) : (
-              <div>
-                <div>
-                  <p>Email: {cust.email}</p>
-                  <p>Name: {cust.name}</p>
+          <div key={cust.id} 
+        onClick= {() => navigate(`/customer/${cust.id}`)}
+          >
+            <p>Email: {cust.email}</p>
+             <p>Name: {cust.name}</p>
                 </div>
-                <div>
-                  <button onClick={() => setMenuOpen(menuOpen === cust.id ? null : cust.id)}>
-                    ⋮
-                  </button>
-                  {menuOpen === cust.id && (
-                    <div
-                      
-                    >
-                      <button
-                        onClick={() => {
-                          setEditingCustomer(cust.id);
-                          setEditData({ email: cust.email, name: cust.name || "" });
-                          setMenuOpen(null);
-                        }}
-                      >
-                        Edit
-                      </button>
-                      <button
-                        onClick={() => {
-                          deleteCustomer(cust.id);
-                          setMenuOpen(null);
-                        }}
-                      >
-                        Delete
-                      </button>
-                    </div>
-                  )}
-                </div>
-              </div>
+               ))
             )}
-          </div>
-        ))
-      )}
-    </div>
-  );
+        </div>
+      );
 }
