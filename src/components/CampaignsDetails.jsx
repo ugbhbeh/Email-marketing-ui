@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import api from "../services/api";
 
 export default function CampaignDetailsPage() {
@@ -57,7 +57,7 @@ const fetchAllCustomers = async () => {
       setError(err.response?.data?.error || "Failed to remove customer");
     }
   };
-// Add existing customers to campaign
+
 const addCustomersToCampaign = async () => {
   if (selectedCustomerIds.length === 0) return;
   try {
@@ -71,7 +71,6 @@ const addCustomersToCampaign = async () => {
   }
 };
 
-// CSV import (multipart/form-data upload)
 const importCsv = async (file) => {
   try {
     const formData = new FormData();
@@ -87,11 +86,6 @@ const importCsv = async (file) => {
   }
 };
 
-
-  useEffect(() => {
-    fetchCampaign();
-  }, [id]);
-
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
   if (!campaign) return <p>No campaign found.</p>;
@@ -104,8 +98,18 @@ const importCsv = async (file) => {
       <p>Created: {new Date(campaign.createdAt).toLocaleDateString()}</p>
       <p>Updated: {new Date(campaign.updatedAt).toLocaleDateString()}</p>
 
+      {campaign.stats && (
+        <div>
+          <h3>Stats</h3>
+          <p>Total mails: {campaign.stats.total}</p>
+          <p>Sent: {campaign.stats.sent}</p>
+          <p>Failed: {campaign.stats.failed}</p>
+          <p>Unique customers mailed: {campaign.stats.uniqueCount}</p>
+        </div>
+      )}
+
       <button onClick={deleteCampaign}>Delete Campaign</button>
-        {/* Add customers from dropdown */}
+      
         <h3>Add Existing Customers</h3>
         <select
         multiple
@@ -124,7 +128,7 @@ const importCsv = async (file) => {
         </select>
         <button onClick={addCustomersToCampaign}>Add Selected</button>
 
-              <h3>Import Customers via CSV</h3>
+      <h3>Import Customers via CSV</h3>
       <input
         type="file"
         accept=".csv"
@@ -140,14 +144,11 @@ const importCsv = async (file) => {
       ) : (
         <div>
           {campaign.customers.map((customer) => (
-            <div
-              key={customer.id}
-              
-            >
-              <div>
+            <div key={customer.id} >
+              <Link to={`/customers/${customer.id}`}>
                 <p>Name: {customer.name}</p>
                 <p>Email: {customer.email}</p>
-              </div>
+              </Link>
               <button onClick={() => deleteCustomer(customer.id)}>...</button>
             </div>
           ))}
