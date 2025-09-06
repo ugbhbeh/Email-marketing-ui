@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import {
+  PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer} from "recharts";
 import api from "../services/api";
 
 export default function CustomerDetailsPage() {
@@ -43,83 +45,180 @@ export default function CustomerDetailsPage() {
     }
   };
 
-  if (error) return <p>{error}</p>;
+  if (error) return <p className="text-red-500">{error}</p>;
   if (!customer) return <p>Loading...</p>;
 
+  // Chart data
+  const mailStatsData = [
+    { name: "Sent", value: customer.stats.sentCount },
+    { name: "Failed", value: customer.stats.failedCount },
+  ];
+
   return (
-    <div>
-      <h1>Customer Details</h1>
+    <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+      {/* Customer Info + Edit/Delete */}
+      <div className="p-4 border rounded-lg shadow bg-white">
+        <h1 className="text-xl font-bold mb-4">Customer Details</h1>
 
-      {isEditing ? (
-        <div>
-          <input
-            type="email"
-            value={editData.email}
-            onChange={(e) => setEditData({ ...editData, email: e.target.value })}
-          />
-          <input
-            type="text"
-            value={editData.name}
-            onChange={(e) => setEditData({ ...editData, name: e.target.value })}
-          />
-          <button onClick={updateCustomer}>Save</button>
-          <button onClick={() => setIsEditing(false)}>Cancel</button>
-        </div>
-      ) : (
-        <div>
-          <p><b>Name:</b> {customer.name}</p>
-          <p><b>Email:</b> {customer.email}</p>
-          <p><b>Created:</b> {new Date(customer.createdAt).toLocaleString()}</p>
-          <button
-            onClick={() => {
-              setEditData({ email: customer.email, name: customer.name || "" });
-              setIsEditing(true);
-            }}
-          >
-            Edit
-          </button>
-          <button onClick={deleteCustomer}>Delete</button>
-        </div>
-      )}
+        {isEditing ? (
+          <div className="space-y-2">
+            <input
+              type="email"
+              className="border rounded p-2 w-full"
+              value={editData.email}
+              onChange={(e) =>
+                setEditData({ ...editData, email: e.target.value })
+              }
+            />
+            <input
+              type="text"
+              className="border rounded p-2 w-full"
+              value={editData.name}
+              onChange={(e) =>
+                setEditData({ ...editData, name: e.target.value })
+              }
+            />
+            <div className="space-x-2">
+              <button
+                onClick={updateCustomer}
+                className="px-3 py-1 bg-green-500 text-white rounded"
+              >
+                Save
+              </button>
+              <button
+                onClick={() => setIsEditing(false)}
+                className="px-3 py-1 bg-gray-300 rounded"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        ) : (
+          <div className="space-y-2">
+            <p>
+              <b>Name:</b> {customer.name}
+            </p>
+            <p>
+              <b>Email:</b> {customer.email}
+            </p>
+            <p>
+              <b>Created:</b> {new Date(customer.createdAt).toLocaleString()}
+            </p>
+            <div className="space-x-2">
+              <button
+                onClick={() => {
+                  setEditData({
+                    email: customer.email,
+                    name: customer.name || "",
+                  });
+                  setIsEditing(true);
+                }}
+                className="px-3 py-1 bg-blue-500 text-white rounded"
+              >
+                Edit
+              </button>
+              <button
+                onClick={deleteCustomer}
+                className="px-3 py-1 bg-red-500 text-white rounded"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
 
-      <h2>Stats</h2>
-      <ul>
-        <li>Total Mails: {customer.stats.totalMails}</li>
-        <li>Sent: {customer.stats.sentCount}</li>
-        <li>Failed: {customer.stats.failedCount}</li>
-        <li>
+      {/* Stats with chart */}
+      <div className="p-4 border rounded-lg shadow bg-white">
+        <h2 className="text-lg font-semibold mb-2">Mail Stats</h2>
+        <div className="h-64">
+          <ResponsiveContainer>
+            <PieChart>
+              <Pie
+                data={mailStatsData}
+                dataKey="value"
+                nameKey="name"
+                cx="50%"
+                cy="50%"
+                outerRadius={80}
+                label
+              >
+                <Cell fill="#4caf50" />
+                <Cell fill="#f44336" />
+              </Pie>
+              <Tooltip />
+              <Legend />
+            </PieChart>
+          </ResponsiveContainer>
+        </div>
+        <p className="mt-4 text-sm text-gray-600">
+          Total Mails: {customer.stats.totalMails} <br />
           Last Mail:{" "}
           {customer.stats.lastMail
             ? new Date(customer.stats.lastMail).toLocaleString()
             : "None"}
-        </li>
-      </ul>
+        </p>
+      </div>
 
-      <h2>Campaigns</h2>
-      {customer.campaigns.length === 0 ? (
-        <p>Not in any campaigns</p>
-      ) : (
-        <ul>
-          {customer.campaigns.map((c, idx) => (
-            <li key={idx}>{c.name}</li>
-          ))}
-        </ul>
-      )}
+      {/* Campaigns */}
+      <div className="p-4 border rounded-lg shadow bg-white col-span-1 md:col-span-2">
+        <h2 className="text-lg font-semibold mb-2">Campaigns</h2>
+        {customer.campaigns.length === 0 ? (
+          <p className="text-gray-500">Not in any campaigns</p>
+        ) : (
+          <div className="flex flex-wrap gap-2">
+            {customer.campaigns.map((c) => (
+              <span
+                key={c.id}
+                className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm"
+              >
+                {c.name}
+              </span>
+            ))}
+          </div>
+        )}
+      </div>
 
-      <h2>Mail History</h2>
-      {customer.mailHistory.length === 0 ? (
-        <p>No mail history</p>
-      ) : (
-        <ul>
-          {customer.mailHistory.map((m, idx) => (
-            <li key={idx}>
-              <b>{m.subject}</b> – {m.status} –{" "}
-              {new Date(m.sentAt).toLocaleString()} (Campaign {m.campaignId})
-              {m.error && <p>Error: {m.error}</p>}
-            </li>
-          ))}
-        </ul>
-      )}
+      {/* Mail History */}
+      <div className="p-4 border rounded-lg shadow bg-white col-span-1 md:col-span-2">
+        <h2 className="text-lg font-semibold mb-2">Mail History</h2>
+        {customer.mailHistory.length === 0 ? (
+          <p className="text-gray-500">No mail history</p>
+        ) : (
+          <table className="w-full text-sm border">
+            <thead>
+              <tr className="bg-gray-100">
+                <th className="p-2 border">Subject</th>
+                <th className="p-2 border">Status</th>
+                <th className="p-2 border">Sent At</th>
+                <th className="p-2 border">Campaign</th>
+                <th className="p-2 border">Error</th>
+              </tr>
+            </thead>
+            <tbody>
+              {customer.mailHistory.map((m) => (
+                <tr key={m.id} className="hover:bg-gray-50">
+                  <td className="p-2 border">{m.subject}</td>
+                  <td
+                    className={`p-2 border ${
+                      m.status === "SENT"
+                        ? "text-green-600"
+                        : "text-red-600"
+                    }`}
+                  >
+                    {m.status}
+                  </td>
+                  <td className="p-2 border">
+                    {new Date(m.sentAt).toLocaleString()}
+                  </td>
+                  <td className="p-2 border">{m.campaignId}</td>
+                  <td className="p-2 border">{m.error || "-"}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </div>
     </div>
   );
 }
