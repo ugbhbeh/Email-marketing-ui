@@ -9,7 +9,7 @@ export default function Home(){
       const { logout, isLoggedIn,  } = useContext(AuthContext);
     
     return( 
-    <>
+    <div  className="bg-red-500 text-white p-4">
     <p>hello world, top bar edition</p>
         {isLoggedIn ? (
             
@@ -17,6 +17,6 @@ export default function Home(){
           ) : (
             <Link to="/login"> Login </Link>
               
-        )}</>
+        )}</div>
     )
 }
