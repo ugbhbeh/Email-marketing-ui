@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend } from "recharts";
 import api from "../services/api";
 
 export default function CustomersPage() {
@@ -52,14 +51,12 @@ export default function CustomersPage() {
       <h1 className="text-2xl font-bold mb-4">Customers</h1>
       {error && <p className="text-red-500 mb-4">{error}</p>}
 
-          {/* Quick Stats */}
       <div className="bg-white rounded-xl shadow p-4 mb-6">
         <h3 className="font-semibold mb-2">Customer Overview</h3>
         <p className="text-lg">Total Customers: <b>{customers.length}</b></p>
       </div>
 
 
-      {/* Add Customer */}
       <div className="bg-white rounded-xl shadow p-4 mb-6">
         <h3 className="font-semibold mb-2">Add Single Customer</h3>
         <div className="flex gap-2 mb-2">
@@ -90,7 +87,6 @@ export default function CustomersPage() {
         </div>
       </div>
 
-      {/* Import CSV */}
       <div className="bg-white rounded-xl shadow p-4 mb-6">
         <h3 className="font-semibold mb-2">Import via CSV</h3>
         <input
@@ -104,7 +100,6 @@ export default function CustomersPage() {
         />
       </div>
 
-      {/* Customer List */}
       <div className="bg-white rounded-xl shadow p-4">
         <h2 className="font-semibold mb-4">Customer List</h2>
         {customers.length === 0 ? (

@@ -15,23 +15,16 @@ export default function HomePage() {
           <TabsTrigger value="customers">Customers</TabsTrigger>
          
         </TabsList>
-
-        {/* Campaigns */}
         <TabsContent value="campaigns">
           <CampaignsPage />
         </TabsContent>
-
-        {/* Customers */}
         <TabsContent value="customers">
           <CustomersPage />
         </TabsContent>
-
-        {/* Dashboard */}
         <TabsContent value="dashboard">
           <ProfilePage/>
           <MailingPage/>
         </TabsContent>
-
       </Tabs>
     </div>
   );

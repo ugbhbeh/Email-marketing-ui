@@ -92,7 +92,7 @@ export default function CampaignDetailsPage() {
   if (error) return <p>{error}</p>;
   if (!campaign) return <p>No campaign found.</p>;
 
-  // Chart Data
+ 
   const mailStats = campaign.stats
     ? [
         { name: "Sent", value: campaign.stats.sent },
@@ -110,7 +110,7 @@ export default function CampaignDetailsPage() {
     <div className="p-6 space-y-6">
       <h1 className="text-2xl font-bold mb-4">Campaign Dashboard</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Campaign Info */}
+      
         <div className="p-4 border rounded-lg shadow bg-white">
           <h2 className="text-xl font-semibold mb-2">Details</h2>
           <p><strong>ID:</strong> {campaign.id}</p>
@@ -125,7 +125,7 @@ export default function CampaignDetailsPage() {
           </button>
         </div>
 
-        {/* Mail Stats Pie */}
+     
         <div className="p-4 border rounded-lg shadow bg-white">
           <h2 className="text-xl font-semibold mb-2">Mail Stats</h2>
           <ResponsiveContainer width="100%" height={250}>
@@ -149,7 +149,7 @@ export default function CampaignDetailsPage() {
           </ResponsiveContainer>
         </div>
 
-        {/* Customer Stats Bar */}
+       
         <div className="p-4 border rounded-lg shadow bg-white col-span-1 md:col-span-2">
           <h2 className="text-xl font-semibold mb-2">Customer Overview</h2>
           <ResponsiveContainer width="100%" height={250}>
@@ -164,7 +164,6 @@ export default function CampaignDetailsPage() {
         </div>
       </div>
 
-      {/* Add Customers */}
       <div className="p-4 border rounded-lg shadow bg-white">
         <h3 className="font-semibold">Add Existing Customers</h3>
         <select
@@ -191,7 +190,6 @@ export default function CampaignDetailsPage() {
         </button>
       </div>
 
-      {/* CSV Import */}
       <div className="p-4 border rounded-lg shadow bg-white">
         <h3 className="font-semibold">Import Customers via CSV</h3>
         <input
@@ -205,7 +203,6 @@ export default function CampaignDetailsPage() {
         />
       </div>
 
-      {/* Customers */}
       <div className="p-4 border rounded-lg shadow bg-white">
         <h2 className="text-xl font-semibold mb-4">Customers</h2>
         {campaign.customers?.length === 0 ? (

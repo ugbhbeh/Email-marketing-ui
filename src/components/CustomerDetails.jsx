@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import {
-  PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer} from "recharts";
+import {PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer} from "recharts";
 import api from "../services/api";
 
 export default function CustomerDetailsPage() {
@@ -48,7 +47,7 @@ export default function CustomerDetailsPage() {
   if (error) return <p className="text-red-500">{error}</p>;
   if (!customer) return <p>Loading...</p>;
 
-  // Chart data
+ 
   const mailStatsData = [
     { name: "Sent", value: customer.stats.sentCount },
     { name: "Failed", value: customer.stats.failedCount },
@@ -56,7 +55,7 @@ export default function CustomerDetailsPage() {
 
   return (
     <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
-      {/* Customer Info + Edit/Delete */}
+
       <div className="p-4 border rounded-lg shadow bg-white">
         <h1 className="text-xl font-bold mb-4">Customer Details</h1>
 
@@ -128,7 +127,7 @@ export default function CustomerDetailsPage() {
         )}
       </div>
 
-      {/* Stats with chart */}
+     
       <div className="p-4 border rounded-lg shadow bg-white">
         <h2 className="text-lg font-semibold mb-2">Mail Stats</h2>
         <div className="h-64">
@@ -160,7 +159,6 @@ export default function CustomerDetailsPage() {
         </p>
       </div>
 
-      {/* Campaigns */}
       <div className="p-4 border rounded-lg shadow bg-white col-span-1 md:col-span-2">
         <h2 className="text-lg font-semibold mb-2">Campaigns</h2>
         {customer.campaigns.length === 0 ? (
@@ -179,7 +177,6 @@ export default function CustomerDetailsPage() {
         )}
       </div>
 
-      {/* Mail History */}
       <div className="p-4 border rounded-lg shadow bg-white col-span-1 md:col-span-2">
         <h2 className="text-lg font-semibold mb-2">Mail History</h2>
         {customer.mailHistory.length === 0 ? (

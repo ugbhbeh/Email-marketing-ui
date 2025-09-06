@@ -1,16 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-  BarChart,
-  Bar,
-  PieChart,
-  Pie,
-  Cell,
-  XAxis,
-  YAxis,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-} from "recharts";
+import {BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer} from "recharts";
 import api from "../services/api";
 
 export default function ProfilePage() {
@@ -30,7 +19,7 @@ export default function ProfilePage() {
     fetchProfile();
   }, []);
 
-  // Chart data guarded
+  
   const mailStatsData = profile
     ? [
         { name: "Sent", value: profile.stats.totalSent },
@@ -54,7 +43,6 @@ export default function ProfilePage() {
 
       {status && <p className="text-red-500">{status}</p>}
 
-      {/* Top Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         <div className="p-4 bg-white shadow rounded-lg">
           <p className="text-sm text-gray-500">Email</p>
@@ -74,9 +62,9 @@ export default function ProfilePage() {
         </div>
       </div>
 
-      {/* Charts Section */}
+
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Pie Chart */}
+        
         <div className="p-4 bg-white shadow rounded-lg">
           <h3 className="text-lg font-semibold mb-2">Mail Stats</h3>
           <div className="h-64">
@@ -102,7 +90,6 @@ export default function ProfilePage() {
           </div>
         </div>
 
-        {/* Bar Chart */}
         <div className="p-4 bg-white shadow rounded-lg">
           <h3 className="text-lg font-semibold mb-2">Entity Overview</h3>
           <div className="h-64">
@@ -119,7 +106,6 @@ export default function ProfilePage() {
         </div>
       </div>
 
-      {/* Recent Mails */}
       <div className="p-4 bg-white shadow rounded-lg">
         <h3 className="text-lg font-semibold mb-4">Recent Mails</h3>
         <ul className="space-y-3">
