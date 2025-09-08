@@ -78,65 +78,79 @@ function Signup() {
   };
 
   return (
-    
-      <div>
-        <form onSubmit={handleSubmit} >
-          <h2 >Sign Up</h2>
-          {error && <div >{error}</div>}
-          <div>
-            <input
-              type="email"
-              name="email"
-              autoComplete="email"
-              placeholder="Email"
-              value={formData.email}
-              onChange={handleChange}
-              required
-            />
-            <input
-              type="text"
-              name="name"
-              autoComplete="name"
-              placeholder="name"
-              value={formData.name}
-              onChange={handleChange}
-              required
-            />
-            <input
-              type="password"
-              name="password"
-              autoComplete="new-password"
-              placeholder="Password"
-              value={formData.password}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <button
-            type="submit"
-            disabled={isSubmitting}
-          >
-            {isSubmitting ? 'Signing Up...' : 'Sign Up'}
-          </button>
-        </form>
+  <div className="max-w-md mx-auto mt-16 p-6 bg-white rounded-2xl shadow-lg">
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <h2 className="text-2xl font-bold text-center mb-4">Sign Up</h2>
 
-        <div >
-          <p>Or continue as guest:</p>
-          <button
+      {error && (
+        <div className="p-2 text-sm text-red-600 bg-red-100 rounded">
+          {error}
+        </div>
+      )}
+
+      <input
+        type="email"
+        name="email"
+        autoComplete="email"
+        placeholder="Email"
+        value={formData.email}
+        onChange={handleChange}
+        required
+        className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+      />
+
+      <input
+        type="text"
+        name="name"
+        autoComplete="name"
+        placeholder="Name"
+        value={formData.name}
+        onChange={handleChange}
+        required
+        className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+      />
+
+      <input
+        type="password"
+        name="password"
+        autoComplete="new-password"
+        placeholder="Password"
+        value={formData.password}
+        onChange={handleChange}
+        required
+        className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+      />
+
+      <button
+        type="submit"
+        disabled={isSubmitting}
+        className="w-full py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition disabled:opacity-50"
+      >
+        {isSubmitting ? "Signing Up..." : "Sign Up"}
+      </button>
+    </form>
+
+    <div className="mt-6 text-center space-y-4">
+      <div>
+        <p className="text-gray-600">Or continue as guest:</p>
+        <button
             onClick={handleGuestLogin}
             disabled={isSubmitting}
-          >
-            {isSubmitting ? 'Logging in as Guest...' : 'Continue as Guest'}
+            className="mt-2 w-full py-2 border border-gray-400 text-gray-700 rounded-lg hover:bg-gray-100 transition disabled:opacity-50">
+            {isSubmitting ? "Logging in as Guest..." : "Continue as Guest"}
           </button>
-          <p>
-            Already have an account?{' '}
-            <Link to="/login">
-              Login
-            </Link>
-          </p>
-        </div>
+
       </div>
-  );
+
+      <p className="text-sm text-gray-600">
+        Already have an account?{" "}
+        <Link to="/login" className="text-blue-600 hover:underline">
+          Login
+        </Link>
+      </p>
+    </div>
+  </div>
+);
 }
 
 export default Signup;

@@ -30,38 +30,46 @@ function Login() {
   };
 
   return (
-        <form onSubmit={handleSubmit} >
-          <h2>Welcome Back</h2>
-          <div >
-            <div>
-              <input
-                type="email"
-                placeholder="Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-            </div>
-            <div>
-              <input
-                type="password"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-            </div>
-          </div>
-          <button type="submit">
-            Login
-          </button>
-          <p>
-            Don't have an account?{' '}
-            <Link to="/signup">
-              Sign up
-            </Link>
-          </p>
-        </form>
+<form
+  onSubmit={handleSubmit}
+  className="max-w-md mx-auto mt-20 p-6 bg-white rounded-2xl shadow-lg"
+>
+  <h2 className="text-2xl font-bold text-center mb-6">Welcome Back</h2>
+
+  <div className="space-y-4">
+    <input
+      type="email"
+      placeholder="Email"
+      value={email}
+      onChange={(e) => setEmail(e.target.value)}
+      required
+      className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+    />
+
+    <input
+      type="password"
+      placeholder="Password"
+      value={password}
+      onChange={(e) => setPassword(e.target.value)}
+      required
+      className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+    />
+  </div>
+
+  <button
+    type="submit"
+    className="w-full mt-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+  >
+    Login
+  </button>
+
+  <p className="mt-4 text-center text-sm text-gray-600">
+    Don&apos;t have an account?{" "}
+    <Link to="/signup" className="text-blue-600 hover:underline">
+      Sign up
+    </Link>
+  </p>
+</form>
 
   );
 }
