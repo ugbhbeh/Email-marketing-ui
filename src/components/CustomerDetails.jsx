@@ -208,7 +208,7 @@ export default function CustomerDetailsPage() {
                   <td className="p-2 border">
                     {new Date(m.sentAt).toLocaleString()}
                   </td>
-                  <td className="p-2 border">{m.campaignId}</td>
+                  <td className="p-2 border">{m.campaignName }</td>
                   <td className="p-2 border">{m.error || "-"}</td>
                 </tr>
               ))}
