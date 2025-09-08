@@ -36,31 +36,41 @@ export default function CampaignsPage() {
   }, []);
 
   return (
-    <div>
-      <h1>Campaigns</h1>
+    <div className="max-w-3xl mx-auto p-6">
+      <h1 className="text-2xl font-bold mb-6">Campaigns</h1>
 
-      <div>
+      <div className="flex gap-2 mb mb-6">
         <input
           type="text"
           placeholder="New campaign name"
           value={newName}
           onChange={(e) => setNewName(e.target.value)}
+          className="flex-1 px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-blue-300"
         />
-        <button onClick={createCampaign}>Create Campaign</button>
+        <button
+          onClick={createCampaign}
+          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+        >
+          Create
+        </button>
       </div>
 
-      {loading && <p>Loading...</p>}
-      {error && <p>{error}</p>}
+      {/* Loading / Error */}
+      {loading && <p className="text-gray-500">Loading...</p>}
+      {error && <p className="text-red-600 mb-4">{error}</p>}
 
-      <div>
+      {/* Campaign List */}
+      <div className="grid gap-4">
         {campaigns.map((c) => (
           <Link
             key={c.id}
             to={`/campaigns/${c.id}`}
-            
+            className="block p-4 border rounded-lg hover:shadow-md transition"
           >
-            <h3>{c.name}</h3>
-            <p>Created: {new Date(c.createdAt).toLocaleDateString()}</p>
+            <h3 className="text-lg font-semibold">{c.name}</h3>
+            <p className="text-sm text-gray-500">
+              Created: {new Date(c.createdAt).toLocaleDateString()}
+            </p>
           </Link>
         ))}
       </div>

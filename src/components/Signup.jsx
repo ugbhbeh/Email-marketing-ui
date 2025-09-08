@@ -7,7 +7,7 @@ import AuthContext from '../services/AuthContext.js';
 function Signup() {
   const [formData, setFormData] = useState({
     email: '',
-    username: '',
+    name: '',
     password: '',
   });
 
@@ -95,10 +95,10 @@ function Signup() {
             />
             <input
               type="text"
-              name="username"
-              autoComplete="username"
-              placeholder="Username"
-              value={formData.username}
+              name="name"
+              autoComplete="name"
+              placeholder="name"
+              value={formData.name}
               onChange={handleChange}
               required
             />

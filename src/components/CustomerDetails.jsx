@@ -142,8 +142,8 @@ export default function CustomerDetailsPage() {
                 outerRadius={80}
                 label
               >
-                <Cell fill="#4caf50" />
-                <Cell fill="#f44336" />
+                <Cell fill="#1bb64aff" />
+                <Cell fill="#e93205ff" />
               </Pie>
               <Tooltip />
               <Legend />
