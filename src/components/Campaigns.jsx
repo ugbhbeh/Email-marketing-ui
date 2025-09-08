@@ -54,12 +54,9 @@ export default function CampaignsPage() {
           Create
         </button>
       </div>
-
-      {/* Loading / Error */}
       {loading && <p className="text-gray-500">Loading...</p>}
       {error && <p className="text-red-600 mb-4">{error}</p>}
 
-      {/* Campaign List */}
       <div className="grid gap-4">
         {campaigns.map((c) => (
           <Link

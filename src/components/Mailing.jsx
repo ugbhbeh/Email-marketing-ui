@@ -43,55 +43,48 @@ export default function MailingPage() {
   };
 
   return (
-<div className="max-w-lg mx-auto mt-10 p-6 bg-white rounded-2xl shadow-lg space-y-4">
-  <h1 className="text-2xl font-bold mb-4">Send Campaign</h1>
+   <div className="w-full p-3 bg-white rounded-xl shadow-md">
+      {status && (
+        <p className="mb-2 text-sm text-green-700 bg-green-100 p-2 rounded">
+          {status}
+        </p>
+      )}
 
-  {status && (
-    <p className="p-2 text-sm text-green-700 bg-green-100 rounded">{status}</p>
-  )}
+      <div className="flex flex-col sm:flex-row gap-2">
+    
+        <select
+          value={selectedCampaign}
+          onChange={(e) => setSelectedCampaign(e.target.value)}
+          className="flex-1 px-2 py-1.5 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+          <option value="">Select a campaign</option>
+          {campaigns.map((c) => (
+            <option key={c.id} value={c.id}>
+              {c.name}
+            </option>
+          ))}
+        </select>
+        <input
+          type="text"
+          placeholder="Subject"
+          value={subject}
+          onChange={(e) => setSubject(e.target.value)}
+          className="flex-1 px-2 py-1.5 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
 
-  <div className="space-y-2">
-    <label className="block text-sm font-medium text-gray-700">Campaign</label>
-    <select
-      value={selectedCampaign}
-      onChange={(e) => setSelectedCampaign(e.target.value)}
-      className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-    >
-      <option value="">Select a campaign</option>
-      {campaigns.map((c) => (
-        <option key={c.id} value={c.id}>
-          {c.name}
-        </option>
-      ))}
-    </select>
-  </div>
-
-  <div className="space-y-2">
-    <label className="block text-sm font-medium text-gray-700">Subject</label>
-    <input
-      type="text"
-      value={subject}
-      onChange={(e) => setSubject(e.target.value)}
-      className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-    />
-  </div>
-
-  <div className="space-y-2">
-    <label className="block text-sm font-medium text-gray-700">Message</label>
-    <textarea
-      value={message}
-      onChange={(e) => setMessage(e.target.value)}
-      className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 h-32"
-    />
-  </div>
-
-  <button
-    onClick={sendCampaign}
-    className="w-full py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
-  >
-    Send
-  </button>
-</div>
-
+        <textarea
+          placeholder="Message"
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          className="flex-1 px-2 py-1.5 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 h-16"
+        />
+        <button
+          onClick={sendCampaign}
+          className="px-3 py-1.5 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+        >
+          Send
+        </button>
+      </div>
+    </div>
   );
 }

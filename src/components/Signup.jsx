@@ -139,9 +139,7 @@ function Signup() {
             className="mt-2 w-full py-2 border border-gray-400 text-gray-700 rounded-lg hover:bg-gray-100 transition disabled:opacity-50">
             {isSubmitting ? "Logging in as Guest..." : "Continue as Guest"}
           </button>
-
       </div>
-
       <p className="text-sm text-gray-600">
         Already have an account?{" "}
         <Link to="/login" className="text-blue-600 hover:underline">
