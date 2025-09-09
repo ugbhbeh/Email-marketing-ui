@@ -8,11 +8,11 @@ export default function MailingPage() {
   const [message, setMessage] = useState("");
   const [status, setStatus] = useState("");
 
-  // AI helper states
   const [aiInput, setAiInput] = useState("");
   const [aiReply, setAiReply] = useState("");
   const [tone, setTone] = useState("professional");
   const [loading, setLoading] = useState(false);
+  const [aiPanelOpen, setAiPanelOpen] = useState(false);
 
   const fetchCampaigns = async () => {
     try {
@@ -69,98 +69,126 @@ export default function MailingPage() {
   };
 
   return (
-    <div className="w-full p-3 bg-white rounded-xl shadow-md space-y-4">
+    <div className="w-full max-w-3xl mx-auto p-4 bg-white rounded-xl shadow-md space-y-4 relative">
       {status && (
-        <p className="mb-2 text-sm text-green-700 bg-green-100 p-2 rounded">
-          {status}
-        </p>
+        <p className="text-sm text-green-700 bg-green-100 p-2 rounded">{status}</p>
       )}
-
-      {/* --- Campaign mailing form --- */}
-      <div className="flex flex-col sm:flex-row gap-2">
-        <select
-          value={selectedCampaign}
-          onChange={(e) => setSelectedCampaign(e.target.value)}
-          className="flex-1 px-2 py-1.5 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-        >
-          <option value="">Select a campaign</option>
-          {campaigns.map((c) => (
-            <option key={c.id} value={c.id}>
-              {c.name}
-            </option>
-          ))}
-        </select>
-
-        <input
-          type="text"
-          placeholder="Subject"
-          value={subject}
-          onChange={(e) => setSubject(e.target.value)}
-          className="flex-1 px-2 py-1.5 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-
-        <textarea
-          placeholder="Message"
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          className="flex-1 px-2 py-1.5 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 h-16"
-        />
-
-        <button
-          onClick={sendCampaign}
-          className="px-3 py-1.5 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
-        >
-          Send
-        </button>
-      </div>
-      {/* --- AI helper box --- */}
-      <div className="border-t pt-3">
-        <h3 className="text-sm font-semibold mb-2">AI Email Assistant</h3>
-        <div className="flex gap-2 mb-2">
-          <textarea
-            placeholder="Ask AI to draft or refine an email..."
-            value={aiInput}
-            onChange={(e) => setAiInput(e.target.value)}
-            className="flex-1 px-2 py-1.5 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 h-16"
-          />
+      <div className="flex flex-col space-y-3">
+        <div className="flex flex-col">
+          <label className="text-xs text-gray-500 mb-1">To / Campaign</label>
           <select
-            value={tone}
-            onChange={(e) => setTone(e.target.value)}
-            className="px-2 py-1.5 text-sm border rounded-lg"
+            value={selectedCampaign}
+            onChange={(e) => setSelectedCampaign(e.target.value)}
+            className="px-2 py-1 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-1/3"
           >
-            <option value="professional">Professional</option>
-            <option value="funny">Funny</option>
-            <option value="informal">Informal</option>
+            <option value="">Select a campaign</option>
+            {campaigns.map((c) => (
+              <option key={c.id} value={c.id}>{c.name}</option>
+            ))}
           </select>
-          <button
-            onClick={askAi}
-            disabled={loading}
-            className="px-3 py-1.5 text-sm bg-green-600 text-white rounded-lg hover:bg-green-700 transition disabled:opacity-50"
-          >
-            {loading ? "Thinking..." : "Ask AI"}
-          </button>
         </div>
 
-        {aiReply && (
-          <div className="p-2 text-sm border rounded-lg bg-gray-50 whitespace-pre-line space-y-2">
-            <div>{aiReply}</div>
-            <div className="flex gap-2">
+        <div className="flex flex-col">
+          <label className="text-xs text-gray-500 mb-1">Subject</label>
+          <input
+            type="text"
+            placeholder="Enter subject line"
+            value={subject}
+            onChange={(e) => setSubject(e.target.value)}
+            className="px-2 py-1 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
+          />
+        </div>
+
+        <div className="relative">
+          <textarea
+            placeholder="Write your email here..."
+            value={message}
+            onChange={(e) => {
+              setMessage(e.target.value);
+              e.target.style.height = "auto";
+              e.target.style.height = `${e.target.scrollHeight}px`;
+            }}
+            className="flex-1 px-2 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 min-h-[200px] max-h-[600px] resize-none w-full"
+          />
+
+         
+          <div
+            className="bg-gray-50 border-l border-gray-200 p-2 rounded-l-lg shadow-lg transition-all duration-300"
+            style={{
+              position: "fixed",
+              top: "156px",
+              right: "20px",
+              width: aiPanelOpen ? "385px" : "250px",  
+              height: aiPanelOpen ? "450px" : "300px", 
+              zIndex: 50,
+            }}
+          >
+            <div className="flex justify-between items-center mb-2">
+              <span className="text-sm font-semibold">AI Assistant</span>
               <button
-                onClick={() => setSubject(aiReply)}
-                className="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600"
+                onClick={() => setAiPanelOpen(!aiPanelOpen)}
+                className="text-xs px-1 py-0.5 bg-gray-200 rounded hover:bg-gray-300"
               >
-                Use as Subject
-              </button>
-              <button
-                onClick={() => setMessage(aiReply)}
-                className="px-2 py-1 text-xs bg-purple-500 text-white rounded hover:bg-purple-600"
-              >
-                Use as Message
+                {aiPanelOpen ? "−" : "+"}
               </button>
             </div>
+
+            {/* Panel content always visible */}
+            <div className="flex flex-col h-full">
+              <textarea
+                placeholder="Ask AI to draft or refine an email..."
+                value={aiInput}
+                onChange={(e) => setAiInput(e.target.value)}
+                className="flex-1 px-2 py-1 text-sm border rounded-lg resize-none mb-2"
+              />
+              <select
+                value={tone}
+                onChange={(e) => setTone(e.target.value)}
+                className="px-2 py-1 text-sm border rounded-lg mb-2"
+              >
+                <option value="professional">Professional</option>
+                <option value="funny">Funny</option>
+                <option value="informal">Informal</option>
+              </select>
+              <button
+                onClick={askAi}
+                disabled={loading}
+                className="px-3 py-1 text-sm bg-green-600 text-white rounded hover:bg-green-700 mb-2 disabled:opacity-50"
+              >
+                {loading ? "Thinking..." : "Ask AI"}
+              </button>
+              {aiReply && (
+                <div className="p-2 text-sm border rounded-lg bg-white whitespace-pre-line space-y-2">
+                  <div>{aiReply}</div>
+                  <div className="flex gap-2 mt-1">
+                    <button
+                      onClick={() => setSubject(aiReply)}
+                      className="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600"
+                    >
+                      Use as Subject
+                    </button>
+                    <button
+                      onClick={() => setMessage(aiReply)}
+                      className="px-2 py-1 text-xs bg-purple-500 text-white rounded hover:bg-purple-600"
+                    >
+                      Use as Message
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
-        )}
+        </div>
       </div>
-      </div>
+  
+    <div className="flex justify-end">
+      <button
+        onClick={sendCampaign}
+        className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+      >
+        Send
+      </button>
+    </div>
+  </div>
   );
 }
