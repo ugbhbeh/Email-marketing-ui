@@ -12,15 +12,13 @@ export default function HomePage() {
           <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
           <TabsTrigger value="campaigns">Campaigns</TabsTrigger>
           <TabsTrigger value="customers">Customers</TabsTrigger>
+           <TabsTrigger value="mailing">Mailing</TabsTrigger>
         </TabsList>
 
-        <TabsContent value="dashboard">
-          <div className="w-full space-y-6">
-              <MailingPage />
+        <TabsContent value="dashboard"> 
             <div className="p-6 bg-white rounded-2xl shadow-lg">
               <ProfilePage />
             </div>
-          </div>
         </TabsContent>
         <TabsContent value="campaigns">
           <div className="w-full space-y-6">
@@ -32,6 +30,14 @@ export default function HomePage() {
         <TabsContent value="customers">
           <div className="w-full p-6 bg-white rounded-2xl shadow-lg">
             <CustomersPage />
+          </div>
+        </TabsContent>
+        <TabsContent value="mailing">
+          <div className="w-full space-y-6">
+              <MailingPage />
+            <div className="p-6 bg-white rounded-2xl shadow-lg">
+              <ProfilePage />
+            </div>
           </div>
         </TabsContent>
       </Tabs>
