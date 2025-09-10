@@ -118,8 +118,8 @@ export default function MailingPage() {
               position: "fixed",
               top: "156px",
               right: "20px",
-              width: aiPanelOpen ? "385px" : "250px",  
-              height: aiPanelOpen ? "450px" : "300px", 
+              width: aiPanelOpen ? "650px" : "250px",  
+              height: aiPanelOpen ? "500px" : "300px", 
               zIndex: 50,
             }}
           >
