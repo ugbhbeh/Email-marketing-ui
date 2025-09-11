@@ -23,6 +23,42 @@ export default function MailingPage() {
     }
   };
 
+const saveAsDraft = async () => {
+  if (!subject && !message) {
+    setStatus("Cannot save empty draft");
+    return;
+  }
+  try {
+    const _res = await api.post("/archive/drafts", {
+      subject,
+      message,
+      campaignId: selectedCampaign || null,
+    });
+    setStatus("✅ Draft saved successfully");
+  } catch (err) {
+    console.error(err);
+    setStatus(err.response?.data?.error || "Failed to save draft");
+  }
+};
+
+const saveAsTemplate = async () => {
+  if (!subject && !message) {
+    setStatus("Cannot save empty template");
+    return;
+  }
+  try {
+    const _res = await api.post("/archive/templates", {
+      subject,
+      message,
+    });
+    setStatus("✅ Template saved successfully");
+  } catch (err) {
+    console.error(err);
+    setStatus(err.response?.data?.error || "Failed to save template");
+  }
+};
+
+
   useEffect(() => {
     fetchCampaigns();
   }, []);
@@ -181,13 +217,26 @@ export default function MailingPage() {
         </div>
       </div>
   
-    <div className="flex justify-end">
+    <div className="flex justify-end gap-2">
       <button
         onClick={sendCampaign}
         className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
       >
         Send
       </button>
+       <button
+    onClick={saveAsDraft}
+    className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition"
+  >
+    Save as Draft
+  </button>
+
+  <button
+    onClick={saveAsTemplate}
+    className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition"
+  >
+    Save as Template
+  </button>
     </div>
   </div>
   );

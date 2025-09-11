@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import api from "../services/api";
 
 export default function ArchiveDetailPage() {
-  const { type, id } = useParams(); // type = drafts | templates
+  const { type, id } = useParams(); 
   const [item, setItem] = useState(null);
 
   useEffect(() => {
