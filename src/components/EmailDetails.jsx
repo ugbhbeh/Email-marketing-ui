@@ -1,85 +1,132 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import api from "../services/api";
+import {
+  PieChart,
+  Pie,
+  Cell,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from "recharts";
 
 export default function EmailDetailsPage() {
   const { id } = useParams();
-  const navigate = useNavigate();
-
   const [mail, setMail] = useState(null);
-  const [status, setStatus] = useState("");
-
-  const fetchMail = async () => {
-    try {
-      const res = await api.get(`/mails/${id}`);
-      setMail(res.data);
-    } catch (err) {
-      setStatus(err.response?.data?.error || "Failed to fetch email details");
-    }
-  };
+  const [error, setError] = useState("");
 
   useEffect(() => {
+    const fetchMail = async () => {
+      try {
+        const res = await api.get(`/mails/${id}`);
+        setMail(res.data);
+      } catch (err) {
+        setError(err.response?.data?.error || "Failed to fetch email details");
+      }
+    };
     fetchMail();
-  });
+  }, [id]);
 
-  if (status) {
-    return (
-      <div className="w-full max-w-3xl mx-auto p-4 bg-white rounded-xl shadow-md">
-        <p className="text-sm text-red-600">{status}</p>
-      </div>
-    );
-  }
-
-  if (!mail) {
-    return (
-      <div className="w-full max-w-3xl mx-auto p-4 bg-white rounded-xl shadow-md">
-        <p className="text-sm text-gray-600">Loading email details...</p>
-      </div>
-    );
-  }
+  if (error) return <p className="text-red-500">{error}</p>;
+  if (!mail) return <p>Loading...</p>;
 
   return (
-    <div className="w-full max-w-3xl mx-auto p-4 bg-white rounded-xl shadow-md space-y-4">
-      <div className="flex justify-between items-center">
-        <h1 className="text-lg font-semibold">Email Details</h1>
-        <button
-          onClick={() => navigate(-1)}
-          className="px-3 py-1 text-sm bg-gray-200 rounded-lg hover:bg-gray-300"
+    <div className="p-6 space-y-6">
+      {/* Header */}
+      <div className="p-4 border rounded-lg shadow bg-white">
+        <h1 className="text-2xl font-bold mb-2">{mail.subject}</h1>
+        <span
+          className={`px-3 py-1 text-sm rounded ${
+            mail.status === "SENT"
+              ? "bg-green-100 text-green-700"
+              : "bg-red-100 text-red-700"
+          }`}
         >
-          Back
-        </button>
+          {mail.status}
+        </span>
       </div>
 
-      <div>
-        <h2 className="text-sm font-medium text-gray-500">Subject</h2>
-        <p className="text-base font-semibold text-gray-800 bg-gray-50 border rounded p-2">
-          {mail.campaign?.subject || "No subject"}
+      {/* Core details */}
+      <div className="p-4 border rounded-lg shadow bg-white space-y-2">
+        <h2 className="text-lg font-semibold">Email Content</h2>
+        <p className="whitespace-pre-line">{mail.message}</p>
+        <p className="text-sm text-gray-600">
+          Sent At: {new Date(mail.sentAt).toLocaleString()}
+        </p>
+        {mail.error && (
+          <p className="text-sm text-red-600">Error: {mail.error}</p>
+        )}
+      </div>
+
+      {/* Campaign Info */}
+      <div className="p-4 border rounded-lg shadow bg-white">
+        <h2 className="text-lg font-semibold mb-2">Campaign Info</h2>
+        <p><b>Name:</b> {mail.campaign?.name}</p>
+        <p>
+          <b>Created:</b>{" "}
+          {mail.campaign?.createdAt
+            ? new Date(mail.campaign.createdAt).toLocaleString()
+            : "N/A"}
         </p>
       </div>
 
-      <div>
-        <h2 className="text-sm font-medium text-gray-500">Message</h2>
-        <div className="text-sm text-gray-700 bg-gray-50 border rounded p-3 whitespace-pre-line">
-          {mail.campaign?.message || "No message"}
-        </div>
+      {/* Customer Info */}
+      <div className="p-4 border rounded-lg shadow bg-white">
+        <h2 className="text-lg font-semibold mb-2">Recipient</h2>
+        <p><b>Email:</b> {mail.customer?.email}</p>
+        <p><b>Name:</b> {mail.customer?.name || "—"}</p>
+        <p>
+          <b>Added:</b>{" "}
+          {mail.customer?.createdAt
+            ? new Date(mail.customer.createdAt).toLocaleString()
+            : "N/A"}
+        </p>
+      </div>
+      {/* Timeline */}
+      <div className="p-4 border rounded-lg shadow bg-white">
+        <h2 className="text-lg font-semibold mb-4">Timeline</h2>
+        <ol className="relative border-l border-gray-300">
+          {/* Campaign created */}
+          <li className="mb-6 ml-4">
+            <div className="absolute w-3 h-3 bg-blue-500 rounded-full -left-1.5 border border-white"></div>
+            <time className="mb-1 text-sm font-normal text-gray-400">
+              {mail.campaign?.createdAt
+                ? new Date(mail.campaign.createdAt).toLocaleString()
+                : "N/A"}
+            </time>
+            <p className="text-base font-semibold text-gray-900">
+              Campaign Created
+            </p>
+            <p className="text-sm text-gray-600">{mail.campaign?.name}</p>
+          </li>
+
+          {/* Customer added */}
+          <li className="mb-6 ml-4">
+            <div className="absolute w-3 h-3 bg-purple-500 rounded-full -left-1.5 border border-white"></div>
+            <time className="mb-1 text-sm font-normal text-gray-400">
+              {mail.customer?.createdAt
+                ? new Date(mail.customer.createdAt).toLocaleString()
+                : "N/A"}
+            </time>
+            <p className="text-base font-semibold text-gray-900">
+              Customer Added
+            </p>
+            <p className="text-sm text-gray-600">{mail.customer?.email}</p>
+          </li>
+
+          {/* Email sent */}
+          <li className="ml-4">
+            <div className="absolute w-3 h-3 bg-green-500 rounded-full -left-1.5 border border-white"></div>
+            <time className="mb-1 text-sm font-normal text-gray-400">
+              {mail.sentAt ? new Date(mail.sentAt).toLocaleString() : "N/A"}
+            </time>
+            <p className="text-base font-semibold text-gray-900">Email Sent</p>
+            <p className="text-sm text-gray-600">{mail.subject}</p>
+          </li>
+        </ol>
       </div>
 
-      <div>
-        <h2 className="text-sm font-medium text-gray-500 mb-1">Recipients</h2>
-        <ul className="list-disc list-inside text-sm text-gray-700 bg-gray-50 border rounded p-2 max-h-40 overflow-y-auto">
-          {mail.customer ? (
-            <li>{mail.customer.email}</li>
-          ) : (
-            mail.recipients?.map((c) => (
-              <li key={c.id}>{c.email}</li>
-            ))
-          )}
-        </ul>
-      </div>
-
-      <div className="text-xs text-gray-500">
-        Sent on: {new Date(mail.createdAt).toLocaleString()}
-      </div>
+    
     </div>
   );
 }
