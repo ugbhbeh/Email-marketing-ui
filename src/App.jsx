@@ -14,6 +14,7 @@ import CampaignDetailsPage from './components/CampaignsDetails'
 import CustomersPage from './components/Customer'
 import CustomerDetailsPage from './components/CustomerDetails'
 import MailingPage from './components/Mailing'
+import EmailDetailsPage from './components/EmailDetails'
 
 function AppRoutes() {
   const { isLoggedIn } = useContext(AuthContext);
@@ -28,6 +29,7 @@ function AppRoutes() {
       <Route path="/customers" element={ <CustomersPage />} />
       <Route path="/customers/:id" element={ <CustomerDetailsPage />} />
       <Route path="/mailing" element={ <MailingPage />} />
+      <Route path="/mail/:id" element={<EmailDetailsPage/> } />
     </Routes>
   );
 }

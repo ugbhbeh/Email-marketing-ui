@@ -165,9 +165,9 @@ export default function CustomerDetailsPage() {
           <p className="text-gray-500">Not in any campaigns</p>
         ) : (
           <div className="flex flex-wrap gap-2">
-            {customer.campaigns.map((c) => (
+            {customer.campaigns.map((c, idx) => (
               <span
-                key={c.id}
+                key={`${c.id}-${idx}`} 
                 className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm"
               >
                 {c.name}
@@ -193,8 +193,8 @@ export default function CustomerDetailsPage() {
               </tr>
             </thead>
             <tbody>
-              {customer.mailHistory.map((m) => (
-                <tr key={m.id} className="hover:bg-gray-50">
+              {customer.mailHistory.map((m, idx) => (
+             <tr key={`${m.id}-${idx}`} className="hover:bg-gray-50">
                   <td className="p-2 border">{m.subject}</td>
                   <td
                     className={`p-2 border ${

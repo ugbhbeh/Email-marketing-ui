@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import {BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer} from "recharts";
 import api from "../services/api";
 
@@ -117,6 +118,7 @@ export default function ProfilePage() {
                 key={m.id}
                 className="p-3 border rounded-md hover:bg-gray-50 transition"
               >
+                <Link to={`/mail/${m.id}`}>
                 <p className="font-semibold">
                   {m.subject || "No Subject"} —{" "}
                   <span
@@ -128,9 +130,12 @@ export default function ProfilePage() {
                         : "text-gray-600"
                     }
                   >
+                  
+                    
                     {m.status}
                   </span>
                 </p>
+                  </Link>
                 <p className="text-sm text-gray-600">
                   To: {m.customer?.email || "unknown"} | Campaign:{" "}
                   {m.campaign?.name || "N/A"} |{" "}
