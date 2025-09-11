@@ -1,11 +1,12 @@
-// src/pages/ArchiveDetailPage.jsx
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import api from "../services/api";
 
 export default function ArchiveDetailPage() {
   const { type, id } = useParams(); 
   const [item, setItem] = useState(null);
+  const [_status, setStatus] = useState("");
+  const navigate = useNavigate(); 
 
   useEffect(() => {
     fetchItem();
@@ -20,6 +21,19 @@ export default function ArchiveDetailPage() {
     }
   };
 
+   const deleteItem = async () => {
+    if (!window.confirm("Are you sure you want to delete this?")) return;
+
+    try {
+      await api.delete(`/archive/${type}/${id}`);
+      setStatus("✅ Deleted successfully");
+      setTimeout(() => navigate("/archive"), 1000);
+    } catch (err) {
+      console.error(err);
+      setStatus(err.response?.data?.error || "Failed to delete");
+    }
+  };
+
   if (!item) return <p className="p-6 text-gray-500">Loading...</p>;
 
   return (
@@ -31,6 +45,12 @@ export default function ArchiveDetailPage() {
       <div className="bg-white p-4 rounded-lg shadow">
         <p className="whitespace-pre-wrap">{item.message}</p>
       </div>
+       <button
+        onClick={deleteItem}
+        className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+      >
+        Delete {type === "drafts" ? "Draft" : "Template"}
+      </button>
     </div>
   );
 }
