@@ -15,6 +15,8 @@ import CustomersPage from './components/Customer'
 import CustomerDetailsPage from './components/CustomerDetails'
 import MailingPage from './components/Mailing'
 import EmailDetailsPage from './components/EmailDetails'
+import ArchivePage from './components/Archive'
+import ArchiveDetailPage from './components/ArchiveDetails'
 
 function AppRoutes() {
   const { isLoggedIn } = useContext(AuthContext);
@@ -30,6 +32,8 @@ function AppRoutes() {
       <Route path="/customers/:id" element={ <CustomerDetailsPage />} />
       <Route path="/mailing" element={ <MailingPage />} />
       <Route path="/mail/:id" element={<EmailDetailsPage/> } />
+      <Route path="/archive" element={<ArchivePage />} />
+     <Route path="/archive/:type/:id" element={<ArchiveDetailPage />} />
     </Routes>
   );
 }
