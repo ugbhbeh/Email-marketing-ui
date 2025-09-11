@@ -1,14 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import api from "../services/api";
-import {
-  PieChart,
-  Pie,
-  Cell,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-} from "recharts";
 
 export default function EmailDetailsPage() {
   const { id } = useParams();
@@ -32,7 +24,6 @@ export default function EmailDetailsPage() {
 
   return (
     <div className="p-6 space-y-6">
-      {/* Header */}
       <div className="p-4 border rounded-lg shadow bg-white">
         <h1 className="text-2xl font-bold mb-2">{mail.subject}</h1>
         <span
@@ -46,7 +37,6 @@ export default function EmailDetailsPage() {
         </span>
       </div>
 
-      {/* Core details */}
       <div className="p-4 border rounded-lg shadow bg-white space-y-2">
         <h2 className="text-lg font-semibold">Email Content</h2>
         <p className="whitespace-pre-line">{mail.message}</p>
@@ -58,7 +48,7 @@ export default function EmailDetailsPage() {
         )}
       </div>
 
-      {/* Campaign Info */}
+     
       <div className="p-4 border rounded-lg shadow bg-white">
         <h2 className="text-lg font-semibold mb-2">Campaign Info</h2>
         <p><b>Name:</b> {mail.campaign?.name}</p>
@@ -70,7 +60,7 @@ export default function EmailDetailsPage() {
         </p>
       </div>
 
-      {/* Customer Info */}
+    
       <div className="p-4 border rounded-lg shadow bg-white">
         <h2 className="text-lg font-semibold mb-2">Recipient</h2>
         <p><b>Email:</b> {mail.customer?.email}</p>
@@ -82,11 +72,11 @@ export default function EmailDetailsPage() {
             : "N/A"}
         </p>
       </div>
-      {/* Timeline */}
+     
       <div className="p-4 border rounded-lg shadow bg-white">
         <h2 className="text-lg font-semibold mb-4">Timeline</h2>
         <ol className="relative border-l border-gray-300">
-          {/* Campaign created */}
+          
           <li className="mb-6 ml-4">
             <div className="absolute w-3 h-3 bg-blue-500 rounded-full -left-1.5 border border-white"></div>
             <time className="mb-1 text-sm font-normal text-gray-400">
@@ -100,7 +90,7 @@ export default function EmailDetailsPage() {
             <p className="text-sm text-gray-600">{mail.campaign?.name}</p>
           </li>
 
-          {/* Customer added */}
+          
           <li className="mb-6 ml-4">
             <div className="absolute w-3 h-3 bg-purple-500 rounded-full -left-1.5 border border-white"></div>
             <time className="mb-1 text-sm font-normal text-gray-400">
@@ -114,7 +104,6 @@ export default function EmailDetailsPage() {
             <p className="text-sm text-gray-600">{mail.customer?.email}</p>
           </li>
 
-          {/* Email sent */}
           <li className="ml-4">
             <div className="absolute w-3 h-3 bg-green-500 rounded-full -left-1.5 border border-white"></div>
             <time className="mb-1 text-sm font-normal text-gray-400">

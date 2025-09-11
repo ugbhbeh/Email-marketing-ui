@@ -3,6 +3,7 @@ import CampaignsPage from "./Campaigns";
 import CustomersPage from "./Customer";
 import ProfilePage from "./Profile";
 import MailingPage from "./Mailing";
+import ArchivePage from "./Archive";
 
 export default function HomePage() {
   return (
@@ -13,6 +14,7 @@ export default function HomePage() {
           <TabsTrigger value="campaigns">Campaigns</TabsTrigger>
           <TabsTrigger value="customers">Customers</TabsTrigger>
            <TabsTrigger value="mailing">Mailing</TabsTrigger>
+            <TabsTrigger value="archive">Archive</TabsTrigger>
         </TabsList>
 
         <TabsContent value="dashboard"> 
@@ -35,6 +37,11 @@ export default function HomePage() {
         <TabsContent value="mailing">
           <div className="w-full space-y-6">
               <MailingPage />
+          </div>
+        </TabsContent>
+         <TabsContent value="archive">
+          <div className="w-full space-y-6">
+              <ArchivePage/>
           </div>
         </TabsContent>
       </Tabs>
