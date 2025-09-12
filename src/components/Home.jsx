@@ -1,49 +1,44 @@
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import CampaignsPage from "./Campaigns";
-import CustomersPage from "./Customer";
-import ProfilePage from "./Profile";
-import MailingPage from "./Mailing";
-import ArchivePage from "./Archive";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 
 export default function HomePage() {
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  // Map current path to tab
+  const getActiveTab = () => {
+    if (location.pathname.startsWith("/campaigns")) return "campaigns";
+    if (location.pathname.startsWith("/customers")) return "customers";
+    if (location.pathname.startsWith("/mailing") || location.pathname.startsWith("/mail")) return "mailing";
+    if (location.pathname.startsWith("/archive")) return "archive";
+    return "dashboard";
+  };
+
   return (
     <div className="p-6 lg:px-16 max-w-7xl mx-auto">
-      <Tabs defaultValue="dashboard">
-        <TabsList className="grid w-full grid-cols-4 mb-6">
-          <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
-          <TabsTrigger value="campaigns">Campaigns</TabsTrigger>
-          <TabsTrigger value="customers">Customers</TabsTrigger>
-           <TabsTrigger value="mailing">Mailing</TabsTrigger>
-            <TabsTrigger value="archive">Archive</TabsTrigger>
+      <Tabs value={getActiveTab()}>
+        <TabsList className="grid w-full grid-cols-5 mb-6">
+          <TabsTrigger value="dashboard" onClick={() => navigate("/")}>
+            Dashboard
+          </TabsTrigger>
+          <TabsTrigger value="campaigns" onClick={() => navigate("/campaigns")}>
+            Campaigns
+          </TabsTrigger>
+          <TabsTrigger value="customers" onClick={() => navigate("/customers")}>
+            Customers
+          </TabsTrigger>
+          <TabsTrigger value="mailing" onClick={() => navigate("/mailing")}>
+            Mailing
+          </TabsTrigger>
+          <TabsTrigger value="archive" onClick={() => navigate("/archive")}>
+            Archive
+          </TabsTrigger>
         </TabsList>
 
-        <TabsContent value="dashboard"> 
-            <div className="p-6 bg-white rounded-2xl shadow-lg">
-              <ProfilePage />
-            </div>
-        </TabsContent>
-        <TabsContent value="campaigns">
-          <div className="w-full space-y-6">
-            <div className="p-6 bg-white rounded-2xl shadow-lg">
-              <CampaignsPage />
-            </div>
-          </div>
-        </TabsContent>
-        <TabsContent value="customers">
-          <div className="w-full p-6 bg-white rounded-2xl shadow-lg">
-            <CustomersPage />
-          </div>
-        </TabsContent>
-        <TabsContent value="mailing">
-          <div className="w-full space-y-6">
-              <MailingPage />
-          </div>
-        </TabsContent>
-         <TabsContent value="archive">
-          <div className="w-full space-y-6">
-              <ArchivePage/>
-          </div>
-        </TabsContent>
+        {/* Floating panel area: swapped by routes */}
+        <div className="p-6 bg-white rounded-2xl shadow-lg">
+          <Outlet />
+        </div>
       </Tabs>
     </div>
   );
