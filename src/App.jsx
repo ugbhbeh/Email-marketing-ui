@@ -1,5 +1,5 @@
 // src/App.jsx
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import {HashRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useContext } from "react";
 import "./App.css";
 
@@ -52,14 +52,14 @@ function AppRoutes() {
 
 function App() {
   return (
-    <BrowserRouter>
+    <HashRouter>
       <AuthProvider>
         <div>
           <TopBar />
           <AppRoutes />
         </div>
       </AuthProvider>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
 
