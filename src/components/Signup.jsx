@@ -1,7 +1,6 @@
 import { useState, useContext } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import api from '../services/api';
-
 import AuthContext from '../services/AuthContext.js';
 
 function Signup() {
@@ -10,45 +9,53 @@ function Signup() {
     name: '',
     password: '',
   });
-
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
-
   const { login } = useContext(AuthContext);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
 
-    if (!formData.email || !formData.username || !formData.password) {
+    // Correct field check
+    if (!formData.email || !formData.name || !formData.password) {
       setError('All fields are required');
       return;
     }
-    
+
     setIsSubmitting(true);
+    console.log('Submitting signup:', formData);
+
     try {
       const response = await api.post('/users', formData);
-      if (response.status === 201 && response.data.token && response.data.userId) {
-        login(response.data.userId, response.data.token);
-        navigate('/');
+      console.log('Signup response:', response.data);
+
+      // Backend currently only returns user info, no token
+      // If you want auto-login, backend must return JWT
+      if (response.status === 201) {
+        // Optionally, call /users/login to get token after signup
+        const loginResp = await api.post('/users/login', {
+          email: formData.email,
+          password: formData.password,
+        });
+        console.log('Auto-login response:', loginResp.data);
+
+        if (loginResp.data.token && loginResp.data.userId) {
+          login(loginResp.data.userId, loginResp.data.token);
+          navigate('/');
+        }
       } else {
         navigate('/login');
       }
-    } catch (error) {
-      if (error.response?.status === 409) {
-        setError('Email or username already exists.');
-      } else {
-        setError(error.response?.data?.error || 'Signup failed, please try again.');
-      }
+    } catch (err) {
+      console.error('Signup error:', err.response?.data || err.message);
+      setError(err.response?.data?.error || 'Signup failed, please try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -59,12 +66,10 @@ function Signup() {
     setIsSubmitting(true);
     try {
       const res = await api.post('/users/guest');
-      if (res.status !== 200) {
-        throw new Error('Guest login failed');
-      }
-      const data = res.data;
-      if (data.token && data.userId) {
-        login(data.userId, data.token);
+      console.log('Guest login response:', res.data);
+
+      if (res.data.token && res.data.userId) {
+        login(res.data.userId, res.data.token);
         navigate('/');
       } else {
         setError('Guest login failed. Please try again.');
@@ -78,77 +83,70 @@ function Signup() {
   };
 
   return (
-  <div className="max-w-md mx-auto mt-16 p-6 bg-white rounded-2xl shadow-lg">
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <h2 className="text-2xl font-bold text-center mb-4">Sign Up</h2>
+    <div className="max-w-md mx-auto mt-16 p-6 bg-white rounded-2xl shadow-lg">
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <h2 className="text-2xl font-bold text-center mb-4">Sign Up</h2>
 
-      {error && (
-        <div className="p-2 text-sm text-red-600 bg-red-100 rounded">
-          {error}
-        </div>
-      )}
+        {error && (
+          <div className="p-2 text-sm text-red-600 bg-red-100 rounded">{error}</div>
+        )}
 
-      <input
-        type="email"
-        name="email"
-        autoComplete="email"
-        placeholder="Email"
-        value={formData.email}
-        onChange={handleChange}
-        required
-        className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-      />
+        <input
+          type="email"
+          name="email"
+          placeholder="Email"
+          value={formData.email}
+          onChange={handleChange}
+          required
+          className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+        <input
+          type="text"
+          name="name"
+          placeholder="Name"
+          value={formData.name}
+          onChange={handleChange}
+          required
+          className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+        <input
+          type="password"
+          name="password"
+          placeholder="Password"
+          value={formData.password}
+          onChange={handleChange}
+          required
+          className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
 
-      <input
-        type="text"
-        name="name"
-        autoComplete="name"
-        placeholder="Name"
-        value={formData.name}
-        onChange={handleChange}
-        required
-        className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-      />
+        <button
+          type="submit"
+          disabled={isSubmitting}
+          className="w-full py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition disabled:opacity-50"
+        >
+          {isSubmitting ? 'Signing Up...' : 'Sign Up'}
+        </button>
+      </form>
 
-      <input
-        type="password"
-        name="password"
-        autoComplete="new-password"
-        placeholder="Password"
-        value={formData.password}
-        onChange={handleChange}
-        required
-        className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-      />
-
-      <button
-        type="submit"
-        disabled={isSubmitting}
-        className="w-full py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition disabled:opacity-50"
-      >
-        {isSubmitting ? "Signing Up..." : "Sign Up"}
-      </button>
-    </form>
-
-    <div className="mt-6 text-center space-y-4">
-      <div>
+      <div className="mt-6 text-center space-y-4">
         <p className="text-gray-600">Or continue as guest:</p>
         <button
-            onClick={handleGuestLogin}
-            disabled={isSubmitting}
-            className="mt-2 w-full py-2 border border-gray-400 text-gray-700 rounded-lg hover:bg-gray-100 transition disabled:opacity-50">
-            {isSubmitting ? "Logging in as Guest..." : "Continue as Guest"}
-          </button>
+          onClick={handleGuestLogin}
+          disabled={isSubmitting}
+          className="mt-2 w-full py-2 border border-gray-400 text-gray-700 rounded-lg hover:bg-gray-100 transition disabled:opacity-50"
+        >
+          {isSubmitting ? 'Logging in as Guest...' : 'Continue as Guest'}
+        </button>
+
+        <p className="text-sm text-gray-600 mt-4">
+          Already have an account?{' '}
+          <Link to="/login" className="text-blue-600 hover:underline">
+            Login
+          </Link>
+        </p>
       </div>
-      <p className="text-sm text-gray-600">
-        Already have an account?{" "}
-        <Link to="/login" className="text-blue-600 hover:underline">
-          Login
-        </Link>
-      </p>
     </div>
-  </div>
-);
+  );
 }
 
 export default Signup;
