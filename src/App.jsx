@@ -20,33 +20,36 @@ import MailingPage from "./components/Mailing";
 import EmailDetailsPage from "./components/EmailDetails";
 import ArchivePage from "./components/Archive";
 import ArchiveDetailPage from "./components/ArchiveDetails";
+import ProfilePage from "./components/Profile";
 
 function AppRoutes() {
   const { isLoggedIn } = useContext(AuthContext);
 
   return (
     <Routes>
-      <Route path="/" element={<Home />}>
-        <Route index element={<Navigate to="campaigns" />} />
-        <Route path="campaigns" element={<CampaignsPage />} />
-        <Route path="campaigns/:id" element={<CampaignDetailsPage />} />
-        <Route path="customers" element={<CustomersPage />} />
-        <Route path="customers/:id" element={<CustomerDetailsPage />} />
-        <Route path="mailing" element={<MailingPage />} />
-        <Route path="mail/:id" element={<EmailDetailsPage />} />
-        <Route path="archive" element={<ArchivePage />} />
-        <Route path="archive/:type/:id" element={<ArchiveDetailPage />} />
-      </Route>
+  <Route path="/" element={<Home />}>
+    <Route index element={<ProfilePage />} />          
+    <Route path="profile" element={<ProfilePage />} /> 
+    <Route path="campaigns" element={<CampaignsPage />} />
+    <Route path="campaigns/:id" element={<CampaignDetailsPage />} />
+    <Route path="customers" element={<CustomersPage />} />
+    <Route path="customers/:id" element={<CustomerDetailsPage />} />
+    <Route path="mailing" element={<MailingPage />} />
+    <Route path="mail/:id" element={<EmailDetailsPage />} />
+    <Route path="archive" element={<ArchivePage />} />
+    <Route path="archive/:type/:id" element={<ArchiveDetailPage />} />
+  </Route>
 
-      <Route
-        path="/login"
-        element={!isLoggedIn ? <Login /> : <Navigate to="/" />}
-      />
-      <Route
-        path="/signup"
-        element={!isLoggedIn ? <Signup /> : <Navigate to="/" />}
-      />
-    </Routes>
+  <Route
+    path="/login"
+    element={!isLoggedIn ? <Login /> : <Navigate to="/" />}
+  />
+  <Route
+    path="/signup"
+    element={!isLoggedIn ? <Signup /> : <Navigate to="/" />}
+  />
+</Routes>
+
   );
 }
 
