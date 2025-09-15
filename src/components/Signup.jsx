@@ -23,28 +23,20 @@ function Signup() {
     e.preventDefault();
     setError('');
 
-    // Correct field check
     if (!formData.email || !formData.name || !formData.password) {
       setError('All fields are required');
       return;
     }
 
     setIsSubmitting(true);
-    console.log('Submitting signup:', formData);
 
     try {
       const response = await api.post('/users', formData);
-      console.log('Signup response:', response.data);
-
-      // Backend currently only returns user info, no token
-      // If you want auto-login, backend must return JWT
       if (response.status === 201) {
-        // Optionally, call /users/login to get token after signup
         const loginResp = await api.post('/users/login', {
           email: formData.email,
           password: formData.password,
         });
-        console.log('Auto-login response:', loginResp.data);
 
         if (loginResp.data.token && loginResp.data.userId) {
           login(loginResp.data.userId, loginResp.data.token);
@@ -54,7 +46,6 @@ function Signup() {
         navigate('/login');
       }
     } catch (err) {
-      console.error('Signup error:', err.response?.data || err.message);
       setError(err.response?.data?.error || 'Signup failed, please try again.');
     } finally {
       setIsSubmitting(false);
@@ -66,7 +57,6 @@ function Signup() {
     setIsSubmitting(true);
     try {
       const res = await api.post('/users/guest');
-      console.log('Guest login response:', res.data);
 
       if (res.data.token && res.data.userId) {
         login(res.data.userId, res.data.token);

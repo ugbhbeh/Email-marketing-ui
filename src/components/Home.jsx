@@ -1,41 +1,37 @@
+import { useState } from "react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 
 export default function HomePage() {
-  const location = useLocation();
   const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useState("dashboard");
 
-  // Map current path to tab
-  const getActiveTab = () => {
-    if (location.pathname.startsWith("/campaigns")) return "campaigns";
-    if (location.pathname.startsWith("/customers")) return "customers";
-    if (location.pathname.startsWith("/mailing") || location.pathname.startsWith("/mail")) return "mailing";
-    if (location.pathname.startsWith("/archive")) return "archive";
-    return "dashboard";
+  const handleTabClick = (tab, path) => {
+    setActiveTab(tab);
+    navigate(path);
   };
 
   return (
     <div className="p-6 lg:px-16 max-w-7xl mx-auto">
-      <Tabs value={getActiveTab()}>
+      <Tabs value={activeTab}>
         <TabsList className="grid w-full grid-cols-5 mb-6">
-          <TabsTrigger value="dashboard" onClick={() => navigate("/")}>
+          <TabsTrigger value="dashboard" onClick={() => handleTabClick("dashboard", "/")}>
             Dashboard
           </TabsTrigger>
-          <TabsTrigger value="campaigns" onClick={() => navigate("/campaigns")}>
+          <TabsTrigger value="campaigns" onClick={() => handleTabClick("campaigns", "/campaigns")}>
             Campaigns
           </TabsTrigger>
-          <TabsTrigger value="customers" onClick={() => navigate("/customers")}>
+          <TabsTrigger value="customers" onClick={() => handleTabClick("customers", "/customers")}>
             Customers
           </TabsTrigger>
-          <TabsTrigger value="mailing" onClick={() => navigate("/mailing")}>
+          <TabsTrigger value="mailing" onClick={() => handleTabClick("mailing", "/mailing")}>
             Mailing
           </TabsTrigger>
-          <TabsTrigger value="archive" onClick={() => navigate("/archive")}>
+          <TabsTrigger value="archive" onClick={() => handleTabClick("archive", "/archive")}>
             Archive
           </TabsTrigger>
         </TabsList>
 
-        {/* Floating panel area: swapped by routes */}
         <div className="p-6 bg-white rounded-2xl shadow-lg">
           <Outlet />
         </div>
