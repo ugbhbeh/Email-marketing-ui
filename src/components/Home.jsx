@@ -15,7 +15,7 @@ export default function HomePage() {
     <div className="p-6 lg:px-16 max-w-7xl mx-auto">
       <Tabs value={activeTab}>
         <TabsList className="grid w-full grid-cols-5 mb-6">
-          <TabsTrigger value="dashboard" onClick={() => handleTabClick("dashboard", "/")}>
+          <TabsTrigger value="dashboard" onClick={() => handleTabClick("dashboard")}>
             Dashboard
           </TabsTrigger>
           <TabsTrigger value="campaigns" onClick={() => handleTabClick("campaigns", "/campaigns")}>

@@ -146,98 +146,82 @@ const saveAsTemplate = async () => {
             }}
             className="flex-1 px-2 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 min-h-[200px] max-h-[600px] resize-none w-full"
           />
-
-         
           <div
-            className="bg-gray-50 border-l border-gray-200 p-2 rounded-l-lg shadow-lg transition-all duration-300"
-            style={{
-              position: "fixed",
-              top: "156px",
-              right: "20px",
-              width: aiPanelOpen ? "650px" : "250px",  
-              height: aiPanelOpen ? "500px" : "300px", 
-              zIndex: 50,
-            }}
-          >
-            <div className="flex justify-between items-center mb-2">
-              <span className="text-sm font-semibold">AI Assistant</span>
-              <button
-                onClick={() => setAiPanelOpen(!aiPanelOpen)}
-                className="text-xs px-1 py-0.5 bg-gray-200 rounded hover:bg-gray-300"
-              >
-                {aiPanelOpen ? "−" : "+"}
-              </button>
-            </div>
+  className="bg-gray-50 border-l border-gray-200 p-2 rounded-l-lg shadow-lg transition-all duration-300 max-h-[80vh] overflow-y-auto"
+  style={{
+    position: "fixed",
+    top: "156px",
+    right: "20px",
+    width: aiPanelOpen ? "650px" : "250px",
+    zIndex: 50,
+  }}
+>
+  <div className="flex justify-between items-center mb-2">
+    <span className="text-sm font-semibold">AI Assistant</span>
+    <button
+      onClick={() => setAiPanelOpen(!aiPanelOpen)}
+      className="text-xs px-1 py-0.5 bg-gray-200 rounded hover:bg-gray-300"
+    >
+      {aiPanelOpen ? "−" : "+"}
+    </button>
+  </div>
 
-            {/* Panel content always visible */}
-            <div className="flex flex-col h-full">
-              <textarea
-                placeholder="Ask AI to draft or refine an email..."
-                value={aiInput}
-                onChange={(e) => setAiInput(e.target.value)}
-                className="flex-1 px-2 py-1 text-sm border rounded-lg resize-none mb-2"
-              />
-              <select
-                value={tone}
-                onChange={(e) => setTone(e.target.value)}
-                className="px-2 py-1 text-sm border rounded-lg mb-2"
-              >
-                <option value="professional">Professional</option>
-                <option value="funny">Funny</option>
-                <option value="informal">Informal</option>
-              </select>
-              <button
-                onClick={askAi}
-                disabled={loading}
-                className="px-3 py-1 text-sm bg-green-600 text-white rounded hover:bg-green-700 mb-2 disabled:opacity-50"
-              >
-                {loading ? "Thinking..." : "Ask AI"}
-              </button>
-              {aiReply && (
-                <div className="p-2 text-sm border rounded-lg bg-white whitespace-pre-line space-y-2">
-                  <div>{aiReply}</div>
-                  <div className="flex gap-2 mt-1">
-                    <button
-                      onClick={() => setSubject(aiReply)}
-                      className="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600"
-                    >
-                      Use as Subject
-                    </button>
-                    <button
-                      onClick={() => setMessage(aiReply)}
-                      className="px-2 py-1 text-xs bg-purple-500 text-white rounded hover:bg-purple-600"
-                    >
-                      Use as Message
-                    </button>
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
+  {/* panel content */}
+  <div className="flex flex-col space-y-2">
+    <textarea
+      placeholder="Ask AI to draft or refine an email..."
+      value={aiInput}
+      onChange={(e) => setAiInput(e.target.value)}
+      className="flex-1 px-2 py-1 text-sm border rounded-lg resize-none mb-2"
+    />
+    <select
+      value={tone}
+      onChange={(e) => setTone(e.target.value)}
+      className="px-2 py-1 text-sm border rounded-lg mb-2"
+    >
+      <option value="professional">Professional</option>
+      <option value="funny">Funny</option>
+      <option value="informal">Informal</option>
+    </select>
+    <button
+      onClick={askAi}
+      disabled={loading}
+      className="px-3 py-1 text-sm bg-green-600 text-white rounded hover:bg-green-700 mb-2 disabled:opacity-50"
+    >
+      {loading ? "Thinking..." : "Ask AI"}
+    </button>
+    {aiReply && (
+      <div className="p-2 text-sm border rounded-lg bg-white whitespace-pre-line space-y-2">
+        <div>{aiReply}</div>
+        <div className="flex gap-2 mt-1">
+          <button
+            onClick={() => setSubject(aiReply)}
+            className="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600"
+          >
+            Use as Subject
+          </button>
+          <button
+            onClick={() => setMessage(aiReply)}
+            className="px-2 py-1 text-xs bg-purple-500 text-white rounded hover:bg-purple-600"
+          >
+            Use as Message
+          </button>
         </div>
       </div>
-  
-    <div className="flex justify-end gap-2">
-      <button
-        onClick={sendCampaign}
-        className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
-      >
-        Send
-      </button>
-       <button
-    onClick={saveAsDraft}
-    className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition"
-  >
-    Save as Draft
-  </button>
-
-  <button
-    onClick={saveAsTemplate}
-    className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition"
-  >
-    Save as Template
-  </button>
-    </div>
+    )}
   </div>
+
+</div>
+<div className="flex justify-end gap-2">
+   <button onClick={sendCampaign} className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition" >
+     Send </button>
+      <button onClick={saveAsDraft} className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition" >
+         Save as Draft </button> 
+         <button onClick={saveAsTemplate} className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition" > Save as Template </button> </div> </div>
+
+   </div>
+
+  </div>
+    
   );
 }
